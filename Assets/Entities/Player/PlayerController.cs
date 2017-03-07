@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour {
     public GameObject projectile;
     public float projectileSpeed;
     public float firingRate = 0.2f;
+    public float health = 250;
+
+    public AudioClip fireSound;
 
     float xmin;
     float xmax;
@@ -79,11 +82,32 @@ public class PlayerController : MonoBehaviour {
             CancelInvoke("Fire");
         }
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Debug.Log("Plaed collied with the missile);
 
+        //we check that the thing we bumped into has a projectile component (o laser tem o projectile component)
+        //chamar de missil o que ta colidindo, desde que seja projectile
+        Projectile missile = collision.gameObject.GetComponent<Projectile>();
+        if (missile) //se o missile existe
+        {
+            health -= missile.GetDamage();
+            missile.Hit(); //destroi o missil 
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
+            // Debug.Log("Hit by a projectile");
+        }
+    }
 
     void Fire()
     {
-        GameObject beam = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+        //offset
+        Vector3 offset = new Vector3(0, 1, 0);
+
+        GameObject beam = Instantiate(projectile, transform.position+offset, Quaternion.identity) as GameObject;
         beam.GetComponent<Rigidbody2D>().velocity = new Vector3(0, projectileSpeed, 0);
+        AudioSource.PlayClipAtPoint(fireSound, transform.position);
     }
 }
