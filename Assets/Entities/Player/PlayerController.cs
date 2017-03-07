@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour {
             missile.Hit(); //destroi o missil 
             if (health <= 0)
             {
-                Destroy(gameObject);
+                Die();
             }
             // Debug.Log("Hit by a projectile");
         }
@@ -109,5 +109,12 @@ public class PlayerController : MonoBehaviour {
         GameObject beam = Instantiate(projectile, transform.position+offset, Quaternion.identity) as GameObject;
         beam.GetComponent<Rigidbody2D>().velocity = new Vector3(0, projectileSpeed, 0);
         AudioSource.PlayClipAtPoint(fireSound, transform.position);
+    }
+
+    void Die()
+    {
+        LevelManager man = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        man.LoadLevel("End Menu");
+        Destroy(gameObject);
     }
 }

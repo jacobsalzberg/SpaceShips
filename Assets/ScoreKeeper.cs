@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScoreKeeper : MonoBehaviour
 {
 
-    public int score = 0;
+    public static int score = 0;
 
     private Text myText;
     
@@ -25,9 +25,8 @@ public class ScoreKeeper : MonoBehaviour
 
     }
 
-    public void Reset()
+    public static void Reset() //static method can be called without having a mytext variable created.
     {
         score = 0;
-        myText.text = score.ToString();
     }
 }
